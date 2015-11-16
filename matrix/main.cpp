@@ -1,5 +1,5 @@
 
-
+//no elo
 // Celem tego programu jest prezentacja pomiaru i analizy 
 //efektywnosci programu za pomoc¹  CodeAnalyst(tm).
 // Implementacja mno¿enia macierzy jest realizowana za pomoca typowego 

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
-#include "omp.h"
+#include <omp.h>
 
 #define USE_MULTIPLE_THREADS true
 #define MAXTHREADS 128
@@ -21,7 +21,7 @@ float matrix_a[ROWS][COLUMNS];    // lewy operand
 float matrix_b[ROWS][COLUMNS];    // prawy operand
 float matrix_r[ROWS][COLUMNS];    // wynik
 
-FILE *result_file;
+//FILE *result_file;
 
 void initialize_matrices() {
 	// zdefiniowanie zawarosci poczatkowej macierzy
@@ -44,15 +44,15 @@ void initialize_matricesZ() {
 		}
 	}
 }
-void print_result() {
-	// wydruk wyniku
-	for (int i = 0; i < ROWS; i++) {
-		for (int j = 0; j < COLUMNS; j++) {
-			fprintf(result_file, "%6.4f ", matrix_r[i][j]);
-		}
-		fprintf(result_file, "\n");
-	}
-}
+//void print_result() {
+//	// wydruk wyniku
+//	for (int i = 0; i < ROWS; i++) {
+//		for (int j = 0; j < COLUMNS; j++) {
+//			fprintf(result_file, "%6.4f ", matrix_r[i][j]);
+//		}
+//		fprintf(result_file, "\n");
+//	}
+//}
 
 void multiply_matrices_IJK() {
 	// mnozenie macierzy 
@@ -113,18 +113,18 @@ void print_elapsed_time() {
 	printf("Czas: %8.4f sec \n",
 		elapsed - start);
 
-	fprintf(result_file,
-		"Czas wykonania programu: %8.4f sec (%6.4f sec rozdzielczosc pomiaru)\n",
-		elapsed - start, resolution);
+	//fprintf(result_file,
+	//	"Czas wykonania programu: %8.4f sec (%6.4f sec rozdzielczosc pomiaru)\n",
+	//	elapsed - start, resolution);
 }
 
 int main(int argc, char* argv[]) {
 	//	 start = (double) clock() / CLK_TCK ;
-	if ((result_file = fopen("classic.txt", "a")) == NULL) {
-		fprintf(stderr, "nie mozna otworzyc pliku wyniku \n");
-		perror("classic");
-		return(EXIT_FAILURE);
-	}
+	//if ((result_file = fopen("classic.txt", "a")) == NULL) {
+	//	fprintf(stderr, "nie mozna otworzyc pliku wyniku \n");
+	//	perror("classic");
+	//	return(EXIT_FAILURE);
+	//}
 
 
 	//Determine the number of threads to use
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
 			NumThreads = MAXTHREADS;
 	} else
 		NumThreads = 1;
-	fprintf(result_file, "Klasyczny algorytm mnozenia macierzy, liczba watkow %d \n", NumThreads);
+	//fprintf(result_file, "Klasyczny algorytm mnozenia macierzy, liczba watkow %d \n", NumThreads);
 	printf("liczba watkow  = %d\n\n", NumThreads);
 
 	initialize_matrices();
@@ -160,7 +160,7 @@ int main(int argc, char* argv[]) {
 	printf("JKI ");
 	print_elapsed_time();
 
-	fclose(result_file);
+	//fclose(result_file);
 
 	return(0);
 }

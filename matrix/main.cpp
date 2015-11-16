@@ -16,6 +16,7 @@
 
 #define USE_MULTIPLE_THREADS true
 #define MAXTHREADS 128
+#define _CRT_SECURE_NO_WARNINGS 1
 
 using std::fstream;
 using std::chrono::system_clock;
@@ -82,9 +83,6 @@ void print_elapsed_time() {
 
 int main(int argc, char* argv[]) {
 	//	 start = (double) clock() / CLK_TCK ;
-	std::time_t end_time = system_clock::to_time_t(system_clock::now());
-	std::cout << std::ctime(&end_time) << "\n";
-	fileStream.open("results.txt", std::ios::in | std::ios::out | std::ios::trunc);
 
 	if (!fileStream.good()) {
 		fprintf(stderr, "nie mozna otworzyc pliku wyniku \n");

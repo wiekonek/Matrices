@@ -5,12 +5,20 @@
 // Implementacja mno¿enia macierzy jest realizowana za pomoca typowego 
 // algorytmu podrêcznikowego. 
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <ctime>
 #include <time.h>
 #include <windows.h>
 #include <omp.h>
+#include <chrono>
 
 #define USE_MULTIPLE_THREADS true
 #define MAXTHREADS 128
+
+using std::fstream;
+using std::chrono::system_clock;
 int NumThreads;
 double start;
 
@@ -21,7 +29,7 @@ float matrix_a[ROWS][COLUMNS];    // lewy operand
 float matrix_b[ROWS][COLUMNS];    // prawy operand
 float matrix_r[ROWS][COLUMNS];    // wynik
 
-//FILE *result_file;
+fstream fileStream;
 
 void initialize_matrices() {
 	// zdefiniowanie zawarosci poczatkowej macierzy
@@ -44,15 +52,6 @@ void initialize_matricesZ() {
 		}
 	}
 }
-//void print_result() {
-//	// wydruk wyniku
-//	for (int i = 0; i < ROWS; i++) {
-//		for (int j = 0; j < COLUMNS; j++) {
-//			fprintf(result_file, "%6.4f ", matrix_r[i][j]);
-//		}
-//		fprintf(result_file, "\n");
-//	}
-//}
 
 void multiply_matrices_IJK() {
 	// mnozenie macierzy 
@@ -68,41 +67,6 @@ void multiply_matrices_IJK() {
 	}
 }
 
-void multiply_matrices_IKJ() {
-	// mnozenie macierzy 
-#pragma omp parallel for 
-	for (int i = 0; i < ROWS; i++)
-		for (int k = 0; k < COLUMNS; k++)
-			for (int j = 0; j < COLUMNS; j++)
-				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
-
-}
-
-void multiply_matrices_JIK() {
-	// mnozenie macierzy 
-#pragma omp parallel for 
-
-	for (int j = 0; j < COLUMNS; j++) {
-		for (int i = 0; i < ROWS; i++) {
-			float sum = 0.0;
-			for (int k = 0; k < COLUMNS; k++) {
-				sum = sum + matrix_a[i][k] * matrix_b[k][j];
-			}
-			matrix_r[i][j] = sum;
-		}
-	}
-}
-void multiply_matrices_JKI() {
-	// mnozenie macierzy 
-#pragma omp parallel for 
-	for (int j = 0; j < COLUMNS; j++)
-		for (int k = 0; k < COLUMNS; k++)
-			for (int i = 0; i < ROWS; i++)
-				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
-
-}
-
-
 void print_elapsed_time() {
 	double elapsed;
 	double resolution;
@@ -113,18 +77,19 @@ void print_elapsed_time() {
 	printf("Czas: %8.4f sec \n",
 		elapsed - start);
 
-	//fprintf(result_file,
-	//	"Czas wykonania programu: %8.4f sec (%6.4f sec rozdzielczosc pomiaru)\n",
-	//	elapsed - start, resolution);
+	fileStream << "Czas wykonania programu: " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
 }
 
 int main(int argc, char* argv[]) {
 	//	 start = (double) clock() / CLK_TCK ;
-	//if ((result_file = fopen("classic.txt", "a")) == NULL) {
-	//	fprintf(stderr, "nie mozna otworzyc pliku wyniku \n");
-	//	perror("classic");
-	//	return(EXIT_FAILURE);
-	//}
+	std::time_t end_time = system_clock::to_time_t(system_clock::now());
+	std::cout << std::ctime(&end_time) << "\n";
+	fileStream.open("results.txt", std::ios::in | std::ios::out | std::ios::trunc);
+
+	if (!fileStream.good()) {
+		fprintf(stderr, "nie mozna otworzyc pliku wyniku \n");
+		return(EXIT_FAILURE);
+	}
 
 
 	//Determine the number of threads to use
@@ -136,7 +101,8 @@ int main(int argc, char* argv[]) {
 			NumThreads = MAXTHREADS;
 	} else
 		NumThreads = 1;
-	//fprintf(result_file, "Klasyczny algorytm mnozenia macierzy, liczba watkow %d \n", NumThreads);
+
+	fileStream << "Klasyczny algorytm mnozenia macierzy, liczba watkow" << NumThreads << "\n";
 	printf("liczba watkow  = %d\n\n", NumThreads);
 
 	initialize_matrices();
@@ -145,21 +111,9 @@ int main(int argc, char* argv[]) {
 	printf("IJK ");
 	print_elapsed_time();
 	initialize_matricesZ();
-	start = (double)clock() / CLK_TCK;
-	multiply_matrices_IKJ();
-	printf("IKJ ");
-	print_elapsed_time();
-	initialize_matricesZ();
-	start = (double)clock() / CLK_TCK;
-	multiply_matrices_JIK();
-	printf("JIK ");
-	print_elapsed_time();
-	initialize_matricesZ();
-	start = (double)clock() / CLK_TCK;
-	multiply_matrices_JKI();
-	printf("JKI ");
-	print_elapsed_time();
 
+
+	fileStream.close();
 	//fclose(result_file);
 
 	return(0);

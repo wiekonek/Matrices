@@ -47,7 +47,7 @@ void initialize_matricesZ() {
 		}
 	}
 }
-void print_elapsed_time() {
+void print_elapsed_time(string name) {
 	double elapsed;
 	double resolution;
 
@@ -57,7 +57,7 @@ void print_elapsed_time() {
 	printf("Czas: %8.4f sec \n",
 		elapsed - start);
 
-	fileStream << "Czas wykonania programu: " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
+	fileStream << name + ": " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
 }
 #pragma endregion
 
@@ -109,17 +109,19 @@ int main(int argc, char* argv[]) {
 	}
 
 	fileStream << "File: " << resultFileName << "\n";
-	printf("liczba watkow  = %d\n\n", NumThreads);
+	printf("%s\n\n", resultFileName);
 
 	initialize_matrices();
 	start = (double)clock() / CLK_TCK;
-	multiply_matrices_IJK();
-	printf("IJK ");
-	print_elapsed_time();
-	initialize_matricesZ();
+	multiply_matrices_JKI();
+	print_elapsed_time("JKI3");
 
+	initialize_matricesZ();
+	start = (double)clock() / CLK_TCK;
+	multiply_matrices_IJK();
+	print_elapsed_time("IJK6");
 
 	fileStream.close();
-	return(0);
 	system("PAUSE");
+	return(0);
 }

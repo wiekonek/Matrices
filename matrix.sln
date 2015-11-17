@@ -5,7 +5,13 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_macierze_sekwencyjnie", "matrix\matrix.vcxproj", "{E958D49D-1CA3-48F4-A4D4-44BECD05F521}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_macierze_inaczej", "matrix2\matrix2.vcxproj", "{927A4A8A-BF1C-48A4-99E0-21C7D405830E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_macierze_rownolegle", "matrix2\matrix2.vcxproj", "{927A4A8A-BF1C-48A4-99E0-21C7D405830E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_macierze_rownolegle_powinowactwo", "03_macierze_rownolegle_powinowactwo\03_macierze_rownolegle_powinowactwo.vcxproj", "{CB364583-635C-4153-B73C-CDD6F59530A0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_macierze_rownolegle_powinowactwo_dynamiczne", "04_macierze_rownolegle_powinowactwo_dynamiczne\04_macierze_rownolegle_powinowactwo_dynamiczne.vcxproj", "{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_macierze_rownolegle_powinowactwo_kierowane", "05_macierze_rownolegle_powinowactwo_kierowane\05_macierze_rownolegle_powinowactwo_kierowane.vcxproj", "{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,30 @@ Global
 		{927A4A8A-BF1C-48A4-99E0-21C7D405830E}.Release|x64.Build.0 = Release|x64
 		{927A4A8A-BF1C-48A4-99E0-21C7D405830E}.Release|x86.ActiveCfg = Release|Win32
 		{927A4A8A-BF1C-48A4-99E0-21C7D405830E}.Release|x86.Build.0 = Release|Win32
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Debug|x64.ActiveCfg = Debug|x64
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Debug|x64.Build.0 = Debug|x64
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Debug|x86.ActiveCfg = Debug|Win32
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Debug|x86.Build.0 = Debug|Win32
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Release|x64.ActiveCfg = Release|x64
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Release|x64.Build.0 = Release|x64
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Release|x86.ActiveCfg = Release|Win32
+		{CB364583-635C-4153-B73C-CDD6F59530A0}.Release|x86.Build.0 = Release|Win32
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Debug|x64.ActiveCfg = Debug|x64
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Debug|x64.Build.0 = Debug|x64
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Debug|x86.ActiveCfg = Debug|Win32
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Debug|x86.Build.0 = Debug|Win32
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Release|x64.ActiveCfg = Release|x64
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Release|x64.Build.0 = Release|x64
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Release|x86.ActiveCfg = Release|Win32
+		{7192CC62-E6BF-4B94-A3FC-1F7F554773B2}.Release|x86.Build.0 = Release|Win32
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Debug|x64.ActiveCfg = Debug|x64
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Debug|x64.Build.0 = Debug|x64
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Debug|x86.ActiveCfg = Debug|Win32
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Debug|x86.Build.0 = Debug|Win32
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Release|x64.ActiveCfg = Release|x64
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Release|x64.Build.0 = Release|x64
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Release|x86.ActiveCfg = Release|Win32
+		{BC61C5D4-7FE0-47B3-8624-EEA7A3E9B306}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

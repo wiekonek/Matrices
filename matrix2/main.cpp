@@ -5,12 +5,18 @@
 #include <ctime>
 #include <time.h>
 #include <windows.h>
+#include <omp.h>
+#include <chrono>
+
+#define USE_MULTIPLE_THREADS true
+#define MAXTHREADS 128
 
 using std::fstream;
 using std::string;
 
-static const string TEST_NAME = "sekwencyjnie"; // nazwa testu, identyfikator
+static const string TEST_NAME = "rownolegle"; // nazwa testu, identyfikator
 static const int ISIZE = 1000;		//rozmiar
+
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = ISIZE;     // liczba wierszy macierzy
@@ -57,13 +63,16 @@ void print_elapsed_time() {
 
 #pragma region Mno¿enie macierzy
 void multiply_matrices_JKI() {
+	#pragma omp parallel for 
 	for (int j = 0; j < COLUMNS; j++)
 		for (int k = 0; k < COLUMNS; k++)
 			for (int i = 0; i < ROWS; i++)
 				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 
 }
+
 void multiply_matrices_IJK() {
+	#pragma omp parallel for 
 	for (int i = 0; i < ROWS; i++) {
 		for (int j = 0; j < COLUMNS; j++) {
 			float sum = 0.0;
@@ -76,10 +85,18 @@ void multiply_matrices_IJK() {
 }
 #pragma endregion
 
+
 int main(int argc, char* argv[]) {
 
 	//Determine the number of threads to use
-	NumThreads = 1;
+	if (USE_MULTIPLE_THREADS) {
+		SYSTEM_INFO SysInfo;
+		GetSystemInfo(&SysInfo);
+		NumThreads = SysInfo.dwNumberOfProcessors;
+		if (NumThreads > MAXTHREADS)
+			NumThreads = MAXTHREADS;
+	} else
+		NumThreads = 1;
 
 	std::ostringstream size, numThread;
 	size << ISIZE;
@@ -99,7 +116,6 @@ int main(int argc, char* argv[]) {
 	multiply_matrices_IJK();
 	printf("IJK ");
 	print_elapsed_time();
-
 	initialize_matricesZ();
 
 

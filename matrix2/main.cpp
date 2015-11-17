@@ -15,8 +15,8 @@ using std::fstream;
 using std::string;
 using std::to_string;
 
-static const string TEST_NAME = "rownolegle"; // nazwa testu, identyfikator
-static const int NSIZE = 700;		//rozmiar
+static const string TEST_NAME = "rownolegle";	// nazwa testu, identyfikator
+static const int NSIZE = 700;					//rozmiar
 static const int RSIZE = 100;
 
 #pragma region Pozosta³e deklaracje
@@ -92,7 +92,7 @@ void multiply_matrices_IJK_sequence() {
 	}
 }
 void multiply_matrices_JKI() {
-	#pragma omp parallel for 
+	#pragma omp parallel for
 	for (int j = 0; j < COLUMNS; j++)
 		for (int k = 0; k < COLUMNS; k++)
 			for (int i = 0; i < ROWS; i++)

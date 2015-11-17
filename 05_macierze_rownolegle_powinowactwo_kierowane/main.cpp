@@ -71,6 +71,14 @@ void print_elapsed_time(string name) {
 }
 #pragma endregion
 
+void setup_thread_affinity() {
+	SYSTEM_INFO SysInfo;
+	GetSystemInfo(&SysInfo);
+	int th_id = omp_get_thread_num();
+	DWORD_PTR mask = (1 << (th_id %  SysInfo.dwNumberOfProcessors));
+	SetThreadAffinityMask(GetCurrentThread(), mask);
+}
+
 #pragma region Mno¿enie macierzy
 void multiply_matrices_JKI_sequence() {
 #pragma omp parallel for 
@@ -80,7 +88,7 @@ void multiply_matrices_JKI_sequence() {
 				matrix_r_sequence[i][j] += matrix_a[i][k] * matrix_b[k][j];
 }
 void multiply_matrices_IJK_sequence() {
-#pragma omp parallel for 
+#pragma omp parallel for
 	for (int i = 0; i < ROWS; i++) {
 		for (int j = 0; j < COLUMNS; j++) {
 			float sum = 0.0;
@@ -92,23 +100,31 @@ void multiply_matrices_IJK_sequence() {
 	}
 }
 void multiply_matrices_JKI() {
-#pragma omp parallel for 
-	for (int j = 0; j < COLUMNS; j++)
-		for (int k = 0; k < COLUMNS; k++)
-			for (int i = 0; i < ROWS; i++)
-				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
+	#pragma omp parallel
+	{
+		setup_thread_affinity();
+		#pragma omp for schedule(guided)
+		for (int j = 0; j < COLUMNS; j++)
+			for (int k = 0; k < COLUMNS; k++)
+				for (int i = 0; i < ROWS; i++)
+					matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
+	}
 }
 void multiply_matrices_IJK6() {
 	int n = NSIZE;
 	int r = RSIZE;
-#pragma omp parallel for
-	for (int i = 0; i < n; i += r)
-		for (int j = 0; j < n; j += r)
-			for (int k = 0; k < n; k += r)
-				for (int ii = i; ii < i + r; ii++)
-					for (int jj = j; jj < j + r; jj++)
-						for (int kk = k; kk < k + r; kk++)
-							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
+	#pragma omp parallel
+	{
+		setup_thread_affinity();
+		#pragma omp for schedule(guided)
+		for (int i = 0; i < n; i += r)
+			for (int j = 0; j < n; j += r)
+				for (int k = 0; k < n; k += r)
+					for (int ii = i; ii < i + r; ii++)
+						for (int jj = j; jj < j + r; jj++)
+							for (int kk = k; kk < k + r; kk++)
+								matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
+	}
 }
 #pragma endregion
 

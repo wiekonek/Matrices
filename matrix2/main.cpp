@@ -97,18 +97,21 @@ void multiply_matrices_JKI() {
 			for (int i = 0; i < ROWS; i++)
 				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 }
-void multiply_matrices_IJK() {
+
+void multiply_matrices_IJK6() 
+{
 	#pragma omp parallel for 
-	for (int i = 0; i < ROWS; i++) {
-		for (int j = 0; j < COLUMNS; j++) {
-			float sum = 0.0;
-			for (int k = 0; k < COLUMNS; k++) {
-				sum = sum + matrix_a[i][k] * matrix_b[k][j];
-			}
-			matrix_r[i][j] = sum;
-		}
-	}
+	for (int i = 0; i < n; i += r)
+		for (int j = 0; j < n; j += r)
+			for (int k = 0; k < n; k += r)
+				for (int ii = i; ii < i + r; ii++)
+					for (int jj = j; jj < j + r; jj++)
+						for (int kk = k; kk < k + r; kk++)
+							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
+
+
+
 #pragma endregion
 
 
@@ -145,7 +148,7 @@ int main(int argc, char* argv[]) {
 
 	initialize_matricesZ();
 	start = (double)clock() / CLK_TCK;
-	multiply_matrices_IJK();
+	multiply_matrices_IJK6();
 	print_elapsed_time("IJK6");
 
 	fileStream.close();

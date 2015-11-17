@@ -10,7 +10,7 @@ using std::fstream;
 using std::string;
 
 static const string TEST_NAME = "sekwencyjnie"; // nazwa testu, identyfikator
-static const int ISIZE = 1000;		//rozmiar
+static const int ISIZE = 600;		//rozmiar
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = ISIZE;     // liczba wierszy macierzy
@@ -48,11 +48,11 @@ void print_elapsed_time(string name) {
 	// wyznaczenie i zapisanie czasu przetwarzania
 	elapsed = (double)clock() / CLK_TCK;
 	resolution = 1.0 / CLK_TCK;
-	printf("Czas: %8.4f sec \n",
-		elapsed - start);
 
+	printf("%s Czas: %8.4f sec, \n", name.c_str(), elapsed - start);
 	fileStream << name + ": " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
 }
+
 #pragma endregion
 
 #pragma region Mno¿enie macierzy

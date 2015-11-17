@@ -8,13 +8,15 @@
 
 using std::fstream;
 using std::string;
+using std::to_string;
 
 static const string TEST_NAME = "sekwencyjnie"; // nazwa testu, identyfikator
-static const int ISIZE = 600;		//rozmiar
+static const int NSIZE = 600;		//rozmiar
+static const int RSIZE = 100;
 
 #pragma region Pozosta³e deklaracje
-static const int ROWS = ISIZE;     // liczba wierszy macierzy
-static const int COLUMNS = ISIZE;  // lizba kolumn macierzy
+static const int ROWS = NSIZE;     // liczba wierszy macierzy
+static const int COLUMNS = NSIZE;  // lizba kolumn macierzy
 
 int NumThreads;
 double start;
@@ -63,16 +65,16 @@ void multiply_matrices_JKI() {
 				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 
 }
-void multiply_matrices_IJK() {
-	for (int i = 0; i < ROWS; i++) {
-		for (int j = 0; j < COLUMNS; j++) {
-			float sum = 0.0;
-			for (int k = 0; k < COLUMNS; k++) {
-				sum = sum + matrix_a[i][k] * matrix_b[k][j];
-			}
-			matrix_r[i][j] = sum;
-		}
-	}
+void multiply_matrices_IJK6() {
+	int n = NSIZE;
+	int r = RSIZE;
+	for (int i = 0; i < n; i += r)
+		for (int j = 0; j < n; j += r)
+			for (int k = 0; k < n; k += r)
+				for (int ii = i; ii < i + r; ii++)
+					for (int jj = j; jj < j + r; jj++)
+						for (int kk = k; kk < k + r; kk++)
+							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
 #pragma endregion
 
@@ -81,10 +83,9 @@ int main(int argc, char* argv[]) {
 	//Determine the number of threads to use
 	NumThreads = 1;
 
-	std::ostringstream size, numThread;
-	size << ISIZE;
-	numThread << NumThreads;
-	string resultFileName = "wynik_" + TEST_NAME + "_" + size.str() + "_" + numThread.str() + ".txt";
+	string resultFileName = 
+		"wynik_" + TEST_NAME + "_" + to_string(NSIZE) + "_"
+		+ to_string(RSIZE) + "_" + to_string(NumThreads) + ".txt";
 
 	fileStream.open(resultFileName, std::ios::out | std::ios::trunc);
 	if (!fileStream.good()) {
@@ -101,7 +102,7 @@ int main(int argc, char* argv[]) {
 
 	initialize_matricesZ();
 	start = (double)clock() / CLK_TCK;
-	multiply_matrices_IJK();
+	multiply_matrices_IJK6();
 	print_elapsed_time("IJK6");
 
 	fileStream.close();

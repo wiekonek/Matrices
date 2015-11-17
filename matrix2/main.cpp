@@ -13,13 +13,15 @@
 
 using std::fstream;
 using std::string;
+using std::to_string;
 
 static const string TEST_NAME = "rownolegle"; // nazwa testu, identyfikator
-static const int ISIZE = 700;		//rozmiar
+static const int NSIZE = 700;		//rozmiar
+static const int RSIZE = 100;
 
 #pragma region Pozosta³e deklaracje
-static const int ROWS = ISIZE;     // liczba wierszy macierzy
-static const int COLUMNS = ISIZE;  // lizba kolumn macierzy
+static const int ROWS = NSIZE;     // liczba wierszy macierzy
+static const int COLUMNS = NSIZE;  // lizba kolumn macierzy
 
 int NumThreads;
 double start;
@@ -27,7 +29,7 @@ fstream fileStream;
 float matrix_a[ROWS][COLUMNS];    // lewy operand 
 float matrix_b[ROWS][COLUMNS];    // prawy operand
 float matrix_r[ROWS][COLUMNS];    // wynik
-float matrix_r_sequence[ISIZE][ISIZE]; //wynik kontrolny
+float matrix_r_sequence[NSIZE][NSIZE]; //wynik kontrolny
 #pragma endregion
 
 #pragma region Zapis i inicjowanie macierzy
@@ -56,8 +58,8 @@ void print_elapsed_time(string name) {
 	resolution = 1.0 / CLK_TCK;
 
 	bool isOk = true;
-	for (int i = 0; i < ISIZE; i++)
-		for (int k = 0; k < ISIZE; k++)
+	for (int i = 0; i < NSIZE; i++)
+		for (int k = 0; k < NSIZE; k++)
 			if (matrix_r[i][k] != matrix_r_sequence[i][k]) {
 				isOk = false;
 				break;
@@ -89,7 +91,6 @@ void multiply_matrices_IJK_sequence() {
 		}
 	}
 }
-
 void multiply_matrices_JKI() {
 	#pragma omp parallel for 
 	for (int j = 0; j < COLUMNS; j++)
@@ -97,10 +98,11 @@ void multiply_matrices_JKI() {
 			for (int i = 0; i < ROWS; i++)
 				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 }
-
 void multiply_matrices_IJK6() 
 {
-	#pragma omp parallel for 
+	int n = NSIZE;
+	int r = RSIZE;
+	#pragma omp parallel for
 	for (int i = 0; i < n; i += r)
 		for (int j = 0; j < n; j += r)
 			for (int k = 0; k < n; k += r)
@@ -109,9 +111,6 @@ void multiply_matrices_IJK6()
 						for (int kk = k; kk < k + r; kk++)
 							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
-
-
-
 #pragma endregion
 
 
@@ -126,10 +125,9 @@ int main(int argc, char* argv[]) {
 	} else
 		NumThreads = 1;
 
-	std::ostringstream size, numThread;
-	size << ISIZE;
-	numThread << NumThreads;
-	string resultFileName = "wynik_" + TEST_NAME + "_" + size.str() + "_" + numThread.str() + ".txt";
+	string resultFileName =
+		"wynik_" + TEST_NAME + "_" + to_string(NSIZE) + "_"
+		+ to_string(RSIZE) + "_" + to_string(NumThreads) + ".txt";
 
 	fileStream.open(resultFileName, std::ios::out | std::ios::trunc);
 	if (!fileStream.good()) {
@@ -141,12 +139,13 @@ int main(int argc, char* argv[]) {
 	printf("%s\n\n", resultFileName);
 
 	initialize_matrices();
-	multiply_matrices_JKI_sequence();
+	multiply_matrices_IJK_sequence();
 	start = (double)clock() / CLK_TCK;
 	multiply_matrices_JKI();
 	print_elapsed_time("JKI3");
 
 	initialize_matricesZ();
+	multiply_matrices_IJK_sequence();
 	start = (double)clock() / CLK_TCK;
 	multiply_matrices_IJK6();
 	print_elapsed_time("IJK6");

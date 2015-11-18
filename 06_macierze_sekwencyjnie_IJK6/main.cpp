@@ -60,21 +60,21 @@ void print_elapsed_time(string name) {
 #pragma region Mno¿enie macierzy
 void multiply_matrices_JKI() {
 	for (int j = 0; j < COLUMNS; j++)
-		for (int k = 0; k < COLUMNS; k++)
-			for (int i = 0; i < ROWS; i++)
-				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
+	for (int k = 0; k < COLUMNS; k++)
+	for (int i = 0; i < ROWS; i++)
+		matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 
 }
 void multiply_matrices_IJK6() {
 	int n = NSIZE;
 	int r = RSIZE;
 	for (int i = 0; i < n; i += r)
-		for (int j = 0; j < n; j += r)
-			for (int k = 0; k < n; k += r)
-				for (int ii = i; ii < i + r; ii++)
-					for (int jj = j; jj < j + r; jj++)
-						for (int kk = k; kk < k + r; kk++)
-							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
+	for (int j = 0; j < n; j += r)
+	for (int k = 0; k < n; k += r)
+	for (int ii = i; ii < i + r; ii++)
+	for (int jj = j; jj < j + r; jj++)
+	for (int kk = k; kk < k + r; kk++)
+		matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
 #pragma endregion
 
@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 	//Determine the number of threads to use
 	NumThreads = 1;
 
-	string resultFileName = 
+	string resultFileName =
 		"wynik_" + TEST_NAME + "_" + to_string(NSIZE) + "_"
 		+ to_string(RSIZE) + "_" + to_string(NumThreads) + ".txt";
 
@@ -95,15 +95,15 @@ int main(int argc, char* argv[]) {
 	fileStream << "File: " << resultFileName << "\n";
 	printf("%s\n\n", resultFileName);
 
-	initialize_matrices();
-	start = (double)clock() / CLK_TCK;
-	multiply_matrices_JKI();
-	print_elapsed_time("JKI3");
+	//initialize_matrices();
+	//start = (double)clock() / CLK_TCK;
+	//multiply_matrices_JKI();
+	//print_elapsed_time("JKI3");
 
 	initialize_matricesZ();
 	start = (double)clock() / CLK_TCK;
 	multiply_matrices_IJK6();
-	print_elapsed_time("IJK6");
+	//print_elapsed_time("IJK6");
 
 	fileStream.close();
 	system("PAUSE");

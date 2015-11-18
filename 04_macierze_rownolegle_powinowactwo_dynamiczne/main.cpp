@@ -16,7 +16,7 @@ using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "powinowactwo-dynamiczne"; // nazwa testu, identyfikator
-static const int NSIZE = 700;		//rozmiar
+static const int NSIZE = 2000;		//rozmiar
 static const int RSIZE = 100;
 
 #pragma region Pozosta³e deklaracje

@@ -16,7 +16,7 @@ using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "powinowactwo-JKI3"; // nazwa testu, identyfikator
-static const int NSIZE = 600;		//rozmiar
+static const int NSIZE = 300;		//rozmiar
 static const int RSIZE = 150;
 
 #pragma region Pozosta³e deklaracje
@@ -114,6 +114,6 @@ int main(int argc, char* argv[]) {
 	print_elapsed_time("JKI3");
 
 	fileStream.close();
-	system("PAUSE");
+	
 	return(0);
 }

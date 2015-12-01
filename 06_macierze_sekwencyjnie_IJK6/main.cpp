@@ -10,8 +10,8 @@ using std::fstream;
 using std::string;
 using std::to_string;
 
-static const string TEST_NAME = "sekwencyjnie-IJK"; // nazwa testu, identyfikator
-static const int NSIZE = 1200;		//rozmiar
+static const string TEST_NAME = "sekwencyjnie-IJK6"; // nazwa testu, identyfikator
+static const int NSIZE = 600;		//rozmiar
 static const int RSIZE = 150;
 
 #pragma region Pozosta³e deklaracje
@@ -58,13 +58,6 @@ void print_elapsed_time(string name) {
 #pragma endregion
 
 #pragma region Mno¿enie macierzy
-void multiply_matrices_JKI() {
-	for (int j = 0; j < COLUMNS; j++)
-	for (int k = 0; k < COLUMNS; k++)
-	for (int i = 0; i < ROWS; i++)
-		matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
-
-}
 void multiply_matrices_IJK6() {
 	int n = NSIZE;
 	int r = RSIZE;
@@ -94,11 +87,6 @@ int main(int argc, char* argv[]) {
 
 	fileStream << "File: " << resultFileName << "\n";
 	printf("%s\n\n", resultFileName);
-
-	//initialize_matrices();
-	//start = (double)clock() / CLK_TCK;
-	//multiply_matrices_JKI();
-	//print_elapsed_time("JKI3");
 
 	initialize_matricesZ();
 	start = (double)clock() / CLK_TCK;

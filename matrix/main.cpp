@@ -10,8 +10,8 @@ using std::fstream;
 using std::string;
 using std::to_string;
 
-static const string TEST_NAME = "sekwencyjnie-IJK"; // nazwa testu, identyfikator
-static const int NSIZE = 1200;		//rozmiar
+static const string TEST_NAME = "sekwencyjnie-IJK3"; // nazwa testu, identyfikator
+static const int NSIZE = 600;		//rozmiar
 static const int RSIZE = 150;
 
 #pragma region Pozosta³e deklaracje
@@ -64,17 +64,6 @@ void multiply_matrices_JKI() {
 			for (int i = 0; i < ROWS; i++)
 				matrix_r[i][j] += matrix_a[i][k] * matrix_b[k][j];
 
-}
-void multiply_matrices_IJK6() {
-	int n = NSIZE;
-	int r = RSIZE;
-	for (int i = 0; i < n; i += r)
-		for (int j = 0; j < n; j += r)
-			for (int k = 0; k < n; k += r)
-				for (int ii = i; ii < i + r; ii++)
-					for (int jj = j; jj < j + r; jj++)
-						for (int kk = k; kk < k + r; kk++)
-							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
 #pragma endregion
 

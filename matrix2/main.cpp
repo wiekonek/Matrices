@@ -16,8 +16,8 @@ using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "rownolegle";	// nazwa testu, identyfikator
-static const int NSIZE = 700;					//rozmiar
-static const int RSIZE = 100;
+static const int NSIZE = 1200;					//rozmiar
+static const int RSIZE = 150;
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = NSIZE;     // liczba wierszy macierzy
@@ -144,11 +144,11 @@ int main(int argc, char* argv[]) {
 	multiply_matrices_JKI();
 	print_elapsed_time("JKI3");
 
-	initialize_matricesZ();
-	multiply_matrices_IJK_sequence();
-	start = (double)clock() / CLK_TCK;
-	multiply_matrices_IJK6();
-	print_elapsed_time("IJK6");
+	//initialize_matricesZ();
+	//multiply_matrices_IJK_sequence();
+	//start = (double)clock() / CLK_TCK;
+	//multiply_matrices_IJK6();
+	//print_elapsed_time("IJK6");
 
 	fileStream.close();
 	system("PAUSE");

@@ -6,6 +6,7 @@
 #include <time.h>
 #include <windows.h>
 
+
 using std::fstream;
 using std::string;
 using std::to_string;
@@ -14,7 +15,7 @@ static const string TEST_NAME = "sekwencyjnie"; // nazwa testu, identyfikator
 static const int NSIZE = 2000;		//rozmiar
 static const int RSIZE = 100;
 
-#pragma region Pozosta³e deklaracje
+#pragma region PozostaÂ³e deklaracje
 static const int ROWS = NSIZE;     // liczba wierszy macierzy
 static const int COLUMNS = NSIZE;  // lizba kolumn macierzy
 
@@ -57,7 +58,7 @@ void print_elapsed_time(string name) {
 
 #pragma endregion
 
-#pragma region Mno¿enie macierzy
+#pragma region MnoÂ¿enie macierzy
 void multiply_matrices_JKI() {
 	for (int j = 0; j < COLUMNS; j++)
 		for (int k = 0; k < COLUMNS; k++)

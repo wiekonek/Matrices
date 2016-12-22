@@ -7,6 +7,9 @@
 #include <windows.h>
 #include <omp.h>
 #include <chrono>
+#include <intrin.h>
+#pragma intrinsic(__rdtsc)
+unsigned long long a1, a2;
 
 #define USE_MULTIPLE_THREADS true
 #define MAXTHREADS 128
@@ -16,8 +19,8 @@ using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "powinowactwo-dynamiczne-JKI3"; // nazwa testu, identyfikator
-static const int NSIZE = 300;		//rozmiar
-static const int RSIZE = 150;
+static const int NSIZE = 1200;		//rozmiar
+static const int RSIZE = 300;
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = NSIZE;     // liczba wierszy macierzy
@@ -49,16 +52,11 @@ void initialize_matricesZ() {
 		}
 	}
 }
+
 void print_elapsed_time(string name) {
-	double elapsed;
-	double resolution;
-
-	// wyznaczenie i zapisanie czasu przetwarzania
-	elapsed = (double)clock() / CLK_TCK;
-	resolution = 1.0 / CLK_TCK;
-
-	printf("%s Czas: %8.4f sec, \n", name.c_str(), elapsed - start);
-	fileStream << name + ": " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
+	double delta = (a2 - a1) / 3.1;
+	printf("%s Czas: %f ns, \n", name.c_str(), delta);
+	fileStream << name + ": " << delta << " ns \n";
 }
 #pragma endregion
 
@@ -110,8 +108,9 @@ int main(int argc, char* argv[]) {
 	printf("%s\n\n", resultFileName);
 
 	initialize_matrices();
-	start = (double)clock() / CLK_TCK;
+	a1 = __rdtsc();
 	multiply_matrices_JKI();
+	a2 = __rdtsc();
 	print_elapsed_time("JKI3");
 
 	fileStream.close();

@@ -5,14 +5,17 @@
 #include <ctime>
 #include <time.h>
 #include <windows.h>
+#include <intrin.h>
+#pragma intrinsic(__rdtsc)
+unsigned long long a1, a2;
 
 using std::fstream;
 using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "sekwencyjnie-IJK6"; // nazwa testu, identyfikator
-static const int NSIZE = 300;		//rozmiar
-static const int RSIZE = 150;
+static const int NSIZE = 1200;		//rozmiar
+static const int RSIZE = 80;
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = NSIZE;     // liczba wierszy macierzy
@@ -43,18 +46,12 @@ void initialize_matricesZ() {
 		}
 	}
 }
+
 void print_elapsed_time(string name) {
-	double elapsed;
-	double resolution;
-
-	// wyznaczenie i zapisanie czasu przetwarzania
-	elapsed = (double)clock() / CLK_TCK;
-	resolution = 1.0 / CLK_TCK;
-
-	printf("%s Czas: %8.4f sec, \n", name.c_str(), elapsed - start);
-	fileStream << name + ": " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
+	double delta = (a2 - a1) / 3.1;
+	printf("%s Czas: %f ns, \n", name.c_str(), delta);
+	fileStream << name + ": " << delta << " ns \n";
 }
-
 #pragma endregion
 
 #pragma region Mno¿enie macierzy
@@ -65,9 +62,20 @@ void multiply_matrices_IJK6() {
 	for (int j = 0; j < n; j += r)
 	for (int k = 0; k < n; k += r)
 	for (int ii = i; ii < i + r; ii++)
-	for (int jj = j; jj < j + r; jj++)
 	for (int kk = k; kk < k + r; kk++)
+	for (int jj = j; jj < j + r; jj++)
 		matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
+}
+
+void multiply_matrices_IJK6(int r) {
+	int n = NSIZE;
+	for (int i = 0; i < n; i += r)
+		for (int j = 0; j < n; j += r)
+			for (int k = 0; k < n; k += r)
+				for (int ii = i; ii < i + r; ii++)
+					for (int kk = k; kk < k + r; kk++)
+						for (int jj = j; jj < j + r; jj++)
+							matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
 #pragma endregion
 
@@ -89,11 +97,22 @@ int main(int argc, char* argv[]) {
 	printf("%s\n\n", resultFileName);
 
 	initialize_matricesZ();
-	start = (double)clock() / CLK_TCK;
+
+	//for (int r = 8; r < 500; r++) {
+	//	if (NSIZE % r == 0) {
+	//		a1 = __rdtsc();
+	//		multiply_matrices_IJK6(r);
+	//		a2 = __rdtsc();
+	//		printf("%d :", r);
+	//		print_elapsed_time("IJK6");
+	//	}
+	//}
+
+	a1 = __rdtsc();
 	multiply_matrices_IJK6();
+	a2 = __rdtsc();
 	print_elapsed_time("IJK6");
 
 	fileStream.close();
-	
 	return(0);
 }

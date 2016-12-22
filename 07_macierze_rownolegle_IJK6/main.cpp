@@ -7,6 +7,9 @@
 #include <windows.h>
 #include <omp.h>
 #include <chrono>
+#include <intrin.h>
+#pragma intrinsic(__rdtsc)
+unsigned long long a1, a2;
 
 #define USE_MULTIPLE_THREADS true
 #define MAXTHREADS 128
@@ -16,8 +19,8 @@ using std::string;
 using std::to_string;
 
 static const string TEST_NAME = "rownolegle-IJK6";	// nazwa testu, identyfikator
-static const int NSIZE = 300;					//rozmiar
-static const int RSIZE = 150;
+static const int NSIZE = 1200;					//rozmiar
+static const int RSIZE = 80;
 
 #pragma region Pozosta³e deklaracje
 static const int ROWS = NSIZE;     // liczba wierszy macierzy
@@ -49,16 +52,11 @@ void initialize_matricesZ() {
 		}
 	}
 }
+
 void print_elapsed_time(string name) {
-	double elapsed;
-	double resolution;
-
-	// wyznaczenie i zapisanie czasu przetwarzania
-	elapsed = (double)clock() / CLK_TCK;
-	resolution = 1.0 / CLK_TCK;
-
-	printf("%s Czas: %8.4f sec, \n", name.c_str(), elapsed - start);
-	fileStream << name + ": " << elapsed - start << " sec (" << resolution << " sec rozdzielczosc pomiaru)\n";
+	double delta = (a2 - a1) / 3.1;
+	printf("%s Czas: %f ns, \n", name.c_str(), delta);
+	fileStream << name + ": " << delta << " ns \n";
 }
 #pragma endregion
 
@@ -72,8 +70,8 @@ void multiply_matrices_IJK6()
 	for (int j = 0; j < n; j += r)
 	for (int k = 0; k < n; k += r)
 	for (int ii = i; ii < i + r; ii++)
-	for (int jj = j; jj < j + r; jj++)
 	for (int kk = k; kk < k + r; kk++)
+	for (int jj = j; jj < j + r; jj++)
 		matrix_r[ii][jj] += matrix_a[ii][kk] * matrix_b[kk][jj];
 }
 #pragma endregion
@@ -106,8 +104,9 @@ int main(int argc, char* argv[]) {
 
 
 	initialize_matricesZ();
-	start = (double)clock() / CLK_TCK;
+	a1 = __rdtsc();
 	multiply_matrices_IJK6();
+	a2 = __rdtsc();
 	print_elapsed_time("IJK6");
 
 	fileStream.close();
